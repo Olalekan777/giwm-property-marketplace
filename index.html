@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GIWM Market - Buy & Sell Anything</title>
+<title>GIWM Market - Buy & Sell Anything in Nigeria</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#f1f5f9} header{background:#0a2540;color:#fff;padding:18px;text-align:center;position:sticky;top:0;z-index:10}
@@ -11,120 +12,184 @@ body{background:#f1f5f9} header{background:#0a2540;color:#fff;padding:18px;text-
 .container{max-width:1000px;margin:auto;padding:12px}
 .card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
 .btn{background:#0a2540;color:#fff;border:none;padding:13px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:8px}
-.btn-green{background:#16a34a} .btn-orange{background:#f97316}
+.btn-green{background:#16a34a}.btn-orange{background:#f97316}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.p-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.p-card img{width:100%;height:170px;object-fit:cover}
-.p-info{padding:12px} .badge{background:#e0f2fe;color:#0c4a6e;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold}
-.price{font-weight:bold;color:#0a2540;font-size:16px} .loc{color:#64748b;font-size:12px}
+.p-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);position:relative}
+.p-card img{width:100%;height:180px;object-fit:cover}
+.p-info{padding:12px}.badge{background:#e0f2fe;color:#0c4a6e;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold}
+.price{font-weight:bold;color:#0a2540;font-size:16px}.loc{color:#64748b;font-size:12px}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;align-items:center;justify-content:center;padding:15px}
-.modal.show{display:flex} .modal-box{background:#fff;width:100%;max-width:420px;border-radius:16px;padding:20px;max-height:90vh;overflow:auto}
+.modal.show{display:flex}.modal-box{background:#fff;width:100%;max-width:450px;border-radius:16px;padding:20px;max-height:90vh;overflow:auto}
 input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #cbd5e1;border-radius:8px}
 .opay-box{background:#f0fdf4;border:2px dashed #16a34a;padding:12px;border-radius:10px;margin:10px 0;text-align:center}
+.img-preview{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.img-preview img{width:70px;height:70px;object-fit:cover;border-radius:8px;border:2px solid #16a34a}
+.gallery{position:relative}.gallery-dots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:4px}.dot{width:7px;height:7px;border-radius:50%;background:#ffffffaa}.dot.active{background:#fff}
 </style>
 </head>
 <body>
 <header>
 <h2>GIWM MARKET</h2>
-<p style="font-size:13px;opacity:.9">Nigeria's Free Marketplace - Like Jiji</p>
-<div style="margin-top:10px;display:flex;gap:8px;justify-content:center">
+<p style="font-size:13px;opacity:.9">Nigeria's Free Marketplace</p>
+<div style="margin-top:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
 <button onclick="showModal('postModal')" style="background:#fff;color:#0a2540;border:none;padding:8px 14px;border-radius:20px;font-weight:bold">+ Sell</button>
 <button onclick="showModal('subModal')" style="background:#f97316;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:bold">Subscribe</button>
+<button onclick="downloadApp()" style="background:#22c55e;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:bold">📲 Download App</button>
 </div>
 </header>
 
 <div class="search"><input id="search" placeholder="Search phones, cars, houses, jobs..." oninput="render()"></div>
 
 <div class="container">
-<div class="card" style="background:#fffbeb;border:1px solid #fde68a">
-<b>🎉 FREE MODE ACTIVE:</b> Post 2 items FREE! After that, subscribe from ₦2k/week. <span id="freeLeft"></span>
+<div class="card" id="statusCard" style="background:#dcfce7;border:1px solid #86efac">
+<b>🎉 PROMO: 5 FREE ADS FOR 30 DAYS!</b><br>
+<span id="statusText" style="font-size:13px"></span><br>
+<span id="resetText" style="font-size:11px;color:#166534"></span>
+<span id="adminStatus" style="color:red;font-weight:bold"></span>
 </div>
 <div style="display:flex;gap:8px;margin-bottom:12px">
 <select id="catFilter" onchange="render()" style="flex:1"><option value="">All Categories</option><option>Properties</option><option>Phones</option><option>Cars</option><option>Fashion</option><option>Electronics</option><option>Jobs</option><option>Services</option></select>
-<select id="typeFilter" onchange="render()"><option value="">All</option><option>For Sale</option><option>For Rent</option></select>
 </div>
 <h3>Recent Ads (<span id="count">0</span>)</h3>
 <div class="grid" id="list"></div>
+
+<div class="card" style="margin-top:30px;text-align:center;background:#0a2540;color:#fff">
+<h4>Admin Area - Owner Only</h4>
+<button onclick="showModal('adminModal')" style="margin-top:8px;background:#fff;color:#0a2540;border:none;padding:8px 16px;border-radius:20px;font-weight:bold">Admin Login</button>
+<p style="font-size:11px;margin-top:8px;opacity:.6">Opay: 9040315251 | WhatsApp: +2347059863255</p>
+</div>
 </div>
 
 <div class="modal" id="postModal"><div class="modal-box">
-<h3>Post Your Product</h3>
+<h3>Post Product - Up to 4 Pictures (5 FREE / Month)</h3>
 <p id="postStatus" style="font-size:13px;color:#16a34a;margin:6px 0"></p>
-<input id="pTitle" placeholder="What are you selling? e.g. iPhone 12">
-<input id="pPrice" placeholder="Price e.g. ₦150,000">
-<input id="pLoc" placeholder="Location e.g. Abuja Wuse">
+<input id="pTitle" placeholder="What are you selling?">
+<input id="pPrice" placeholder="Price e.g. ₦2,500,000">
+<input id="pLoc" placeholder="Location e.g. Ibadan">
 <select id="pCat"><option>Properties</option><option>Phones</option><option>Cars</option><option>Fashion</option><option>Electronics</option><option>Jobs</option><option>Services</option></select>
 <input id="pPhone" placeholder="Your Phone Number">
 <input id="pEmail" placeholder="Your Email">
-<textarea id="pDesc" placeholder="Describe your product..."></textarea>
-<input id="pImg" placeholder="Image URL (optional)">
+<textarea id="pDesc" placeholder="Describe..."></textarea>
+<label style="font-weight:bold;font-size:13px;margin-top:8px;display:block">Upload 4 Pictures:</label>
+<input type="file" id="file1" accept="image/*" onchange="previewImage(this,0)">
+<input type="file" id="file2" accept="image/*" onchange="previewImage(this,1)">
+<input type="file" id="file3" accept="image/*" onchange="previewImage(this,2)">
+<input type="file" id="file4" accept="image/*" onchange="previewImage(this,3)">
+<div class="img-preview" id="preview"></div>
+<input id="pImg" placeholder="Or Image URL">
 <button class="btn" onclick="postItem()">Post Now</button>
 <button class="btn" style="background:#eee;color:#333" onclick="hideModal('postModal')">Cancel</button>
 </div></div>
 
 <div class="modal" id="subModal"><div class="modal-box">
-<h3>Subscribe to Sell More</h3>
+<h3>Subscribe After 5 Free</h3>
 <div class="opay-box">
-<b>Pay to Opay Bank:</b><br>
-<span style="font-size:22px;font-weight:bold;color:#16a34a">9040315251</span><br>
-<span style="font-size:13px">Account Name: GIWM MARKET</span><br>
-<span style="font-size:13px">Bank: Opay</span><br><br>
-After payment, send proof on WhatsApp
+<b>Pay to Opay Bank:</b><br><span style="font-size:22px;font-weight:bold;color:#16a34a">9040315251</span><br>Account: GIWM MARKET | Bank: Opay<br><br>WhatsApp Proof: +2347059863255
 </div>
-<div class="card" style="padding:10px"><b>Weekly - ₦2,000</b><br><small>10 posts - 7 days</small><br><button class="btn btn-orange" onclick="selectPlan('Weekly ₦2k')">Choose Weekly</button></div>
-<div class="card" style="padding:10px"><b>Monthly - ₦5,000</b> (Most Popular)<br><small>40 posts + Featured - 30 days</small><br><button class="btn btn-green" onclick="selectPlan('Monthly ₦5k')">Choose Monthly</button></div>
-<div class="card" style="padding:10px"><b>Yearly - ₦30,000</b><br><small>Unlimited + Shop Page - 365 days</small><br><button class="btn" onclick="selectPlan('Yearly ₦30k')">Choose Yearly</button></div>
-<p style="font-size:12px;margin-top:10px">Click choose and you will be redirected to WhatsApp: +2347059863255 to send proof. We activate in 10 mins.</p>
+<div class="card" style="padding:10px"><b>Weekly - ₦2,000</b> (10 posts)<br><button class="btn btn-orange" onclick="selectPlan('Weekly ₦2k')">Choose Weekly</button></div>
+<div class="card" style="padding:10px"><b>Monthly - ₦5,000</b> (40 posts + Featured)<br><button class="btn btn-green" onclick="selectPlan('Monthly ₦5k')">Choose Monthly</button></div>
+<div class="card" style="padding:10px"><b>Yearly - ₦30,000</b> (Unlimited)<br><button class="btn" onclick="selectPlan('Yearly ₦30k')">Choose Yearly</button></div>
 <button class="btn" style="background:#eee;color:#333" onclick="hideModal('subModal')">Close</button>
 </div></div>
 
+<div class="modal" id="adminModal"><div class="modal-box">
+<h3>Admin Login</h3>
+<input id="adminPass" type="password" placeholder="Password: giwm123">
+<button class="btn" onclick="adminLogin()">Login as Owner</button>
+<div id="adminPanel" style="display:none;margin-top:15px;border-top:2px solid #eee;padding-top:10px">
+<h4>👑 Owner Mode: Unlimited FREE</h4>
+<p style="font-size:12px">Total Ads: <span id="adminTotal"></span></p>
+<button class="btn btn-green" onclick="exportData()">📥 Download Customers (CSV)</button>
+<button class="btn btn-orange" onclick="clearAll()">🗑️ Delete All Ads</button>
+<button class="btn" style="background:#eee;color:#333" onclick="adminLogout()">Logout</button>
+<div id="adminList" style="margin-top:10px"></div>
+</div>
+<button class="btn" style="background:#eee;color:#333;margin-top:8px" onclick="hideModal('adminModal')">Close</button>
+</div></div>
+
 <script>
-let items = JSON.parse(localStorage.getItem('giwm_items')) || [
-{title:"3 Bedroom Flat Wuse",price:"₦70M",loc:"Abuja Wuse",cat:"Properties",type:"For Sale",phone:"08012345678",email:"test@gmail.com",desc:"Nice flat",img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9"},
-{title:"iPhone 13 Pro",price:"₦450,000",loc:"Lagos Ikeja",cat:"Phones",type:"For Sale",phone:"08012345678",email:"test@gmail.com",desc:"Clean UK used",img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"},
-{title:"Toyota Camry 2015",price:"₦6.5M",loc:"Abuja Garki",cat:"Cars",type:"For Sale",phone:"08012345678",email:"test@gmail.com",desc:"Tokunbo standard",img:"https://images.unsplash.com/photo-1494976388531-d1058494cdd8"}
-];
+let items = JSON.parse(localStorage.getItem('giwm_items')) || [];
+if(items.length===0){ items=[{title:"Farm land",price:"₦2.5M per acre",loc:"Isioye township, Ibadan",cat:"Properties",phone:"07059863255",email:"owner@giwm.com",desc:"Farm land for sale",imgs:[] }]; }
+
 let userPosts = parseInt(localStorage.getItem('giwm_free_used')||'0');
-const FREE_LIMIT = 2;
-function updateFree(){
-document.getElementById('freeLeft').innerText = `You have used ${userPosts}/${FREE_LIMIT} free posts.`;
-document.getElementById('postStatus').innerText = userPosts < FREE_LIMIT ? `✅ You have ${FREE_LIMIT-userPosts} FREE posts left` : `❌ Free limit reached. Please Subscribe.`;
+let startDate = localStorage.getItem('giwm_free_start');
+let isAdmin = localStorage.getItem('giwm_admin')==='true';
+let uploadedImgs = ["","","",""];
+const FREE_LIMIT = 5;
+const DAYS = 30;
+
+// Check 30 days reset
+if(!startDate){ startDate=Date.now(); localStorage.setItem('giwm_free_start',startDate); }
+let daysPassed = Math.floor((Date.now()-parseInt(startDate))/(1000*60*60*24));
+if(daysPassed >= DAYS){
+  userPosts=0; localStorage.setItem('giwm_free_used','0');
+  localStorage.setItem('giwm_free_start',Date.now().toString());
+  daysPassed=0;
+}
+
+function updateStatus(){
+  let left = FREE_LIMIT - userPosts;
+  let txt = isAdmin? "👑 OWNER: Unlimited FREE posts - No limit" : `You have used ${userPosts}/${FREE_LIMIT} free ads. ${left>0? left+' left this month.' : 'Limit reached.'}`;
+  document.getElementById('statusText').innerHTML = txt;
+  document.getElementById('resetText').innerHTML = isAdmin? "" : `Resets in ${DAYS-daysPassed} days - then you get 5 free again!`;
+  document.getElementById('adminStatus').innerHTML = isAdmin? " | ADMIN LOGGED IN - UNLIMITED" : "";
+  document.getElementById('postStatus').innerText = isAdmin? "✅ Owner Unlimited FREE" : (left>0? `✅ You have ${left} FREE ads left this month` : "❌ 5 free used. Please subscribe to Opay 9040315251");
 }
 function save(){localStorage.setItem('giwm_items',JSON.stringify(items));localStorage.setItem('giwm_free_used',userPosts.toString());}
-function showModal(id){document.getElementById(id).classList.add('show'); if(id=='postModal') updateFree();}
+function showModal(id){document.getElementById(id).classList.add('show'); updateStatus();}
 function hideModal(id){document.getElementById(id).classList.remove('show');}
+function previewImage(input, idx){
+  if(input.files && input.files[0]){
+    let reader = new FileReader();
+    reader.onload = function(e){ uploadedImgs[idx]=e.target.result; document.getElementById('preview').innerHTML = uploadedImgs.filter(x=>x).map(s=>`<img src="${s}">`).join(''); }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
 function postItem(){
-if(userPosts >= FREE_LIMIT){alert('Free limit reached! Please subscribe.'); showModal('subModal'); return;}
-const t=pTitle.value,pr=pPrice.value,loc=pLoc.value,cat=pCat.value,ph=pPhone.value,em=pEmail.value,de=pDesc.value,im=pImg.value;
-if(!t||!pr||!loc||!ph){alert('Fill Title, Price, Location, Phone'); return;}
-items.unshift({title:t,price:pr,loc:loc,cat:cat,type:"For Sale",phone:ph,email:em,desc:de,img:im});
-userPosts++; save(); render(); hideModal('postModal');
-pTitle.value=pPrice.value=pLoc.value=pPhone.value=pEmail.value=pDesc.value=pImg.value='';
-alert('Posted! Your ad is LIVE. '+ (FREE_LIMIT-userPosts) +' free posts left.');
+  if(!isAdmin && userPosts >= FREE_LIMIT){ alert('You used 5 FREE ads! Subscribe to Opay 9040315251 to post more.'); showModal('subModal'); return; }
+  const t=pTitle.value,pr=pPrice.value,loc=pLoc.value,cat=pCat.value,ph=pPhone.value,em=pEmail.value,de=pDesc.value,url=pImg.value;
+  if(!t||!pr||!loc||!ph){alert('Fill Title, Price, Location, Phone'); return;}
+  let imgs = uploadedImgs.filter(x=>x); if(url) imgs.push(url); if(imgs.length===0) imgs=[""];
+  items.unshift({title:t,price:pr,loc:loc,cat:cat,phone:ph,email:em,desc:de,imgs:imgs});
+  if(!isAdmin) userPosts++; save(); render(); hideModal('postModal');
+  pTitle.value=pPrice.value=pLoc.value=pPhone.value=pEmail.value=pDesc.value=pImg.value=''; uploadedImgs=["","","",""]; document.getElementById('preview').innerHTML='';
+  alert(isAdmin? 'Posted! Owner unlimited.' : `Posted! ${FREE_LIMIT-userPosts} free left this month.`);
+  updateStatus();
 }
 function render(){
-const q=search.value.toLowerCase(); const cat=catFilter.value;
-let filtered=items.filter(i=> (i.title+i.loc+i.cat).toLowerCase().includes(q) && (!cat||i.cat==cat));
-document.getElementById('count').innerText=filtered.length;
-document.getElementById('list').innerHTML=filtered.map(i=>`
-<div class="p-card">
-<img src="${i.img||'https://via.placeholder.com/400x250?text=GIWM'}" onerror="this.src='https://via.placeholder.com/400x250?text=GIWM'">
-<div class="p-info">
-<span class="badge">${i.cat}</span> <span class="price">${i.price}</span>
-<h4 style="font-size:14px;margin:5px 0">${i.title}</h4>
-<div class="loc">📍 ${i.loc}</div>
-<p style="font-size:12px;color:#475569;margin:4px 0">${i.desc}</p>
-<div style="display:flex;gap:6px;margin-top:8px">
-<button style="flex:1;background:#0a2540;color:#fff;border:none;padding:8px;border-radius:6px" onclick="window.location.href='tel:${i.phone}'">Call</button>
-<button style="flex:1;background:#22c55e;color:#fff;border:none;padding:8px;border-radius:6px" onclick="window.open('https://wa.me/${i.phone.replace(/^0/,'234')}?text=Hi, I saw ${encodeURIComponent(i.title)} on GIWM Market','_blank')">WhatsApp</button>
-</div>
-</div></div>`).join('');
+  const q=document.getElementById('search').value.toLowerCase(); const cat=document.getElementById('catFilter').value;
+  let filtered=items.filter(i=> (i.title+i.loc+i.cat).toLowerCase().includes(q) && (!cat||i.cat==cat));
+  document.getElementById('count').innerText=filtered.length;
+  document.getElementById('list').innerHTML=filtered.map((i,idx)=>`
+    <div class="p-card">
+      <div class="gallery"><img src="${(i.imgs&&i.imgs[0])||'https://via.placeholder.com/400x250?text=GIWM'}" id="img-${idx}">
+      <div class="gallery-dots">${(i.imgs||[]).map((_,d)=>`<div class='dot ${d===0?'active':''}'></div>`).join('')}</div></div>
+      <div class="p-info">
+        <span class="badge">${i.cat}</span> <span class="price">${i.price}</span>
+        <h4 style="font-size:14px;margin:5px 0">${i.title}</h4>
+        <div class="loc">📍 ${i.loc}</div>
+        <p style="font-size:12px;color:#475569;margin:4px 0">${(i.desc||'').substring(0,120)}</p>
+        ${i.imgs && i.imgs.length>1? `<div style="display:flex;gap:4px;margin:6px 0">${i.imgs.map(src=>`<img src="${src}" onclick="document.getElementById('img-${idx}').src=this.src" style="width:40px;height:40px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid #ddd">`).join('')}</div>` : ''}
+        <div style="display:flex;gap:6px;margin-top:8px">
+          <button style="flex:1;background:#0a2540;color:#fff;border:none;padding:8px;border-radius:6px" onclick="window.location.href='tel:${i.phone}'">Call</button>
+          <button style="flex:1;background:#22c55e;color:#fff;border:none;padding:8px;border-radius:6px" onclick="window.open('https://wa.me/${i.phone.replace(/^0/,'234')}?text=Hi, I saw ${encodeURIComponent(i.title)} on GIWM Market','_blank')">WhatsApp</button>
+          ${isAdmin? `<button style="background:red;color:#fff;border:none;padding:8px;border-radius:6px" onclick="deleteAd(${idx})">Delete</button>` : ''}
+        </div>
+      </div>
+    </div>`).join('');
+  if(isAdmin){
+    document.getElementById('adminTotal').innerText=items.length;
+    document.getElementById('adminList').innerHTML=items.map((i,ix)=>`<div style="font-size:11px;border-bottom:1px solid #eee;padding:4px 0">${i.title} - ${i.phone} <a href="#" onclick="deleteAd(${ix});return false" style="color:red">[X]</a></div>`).join('');
+  }
 }
-function selectPlan(plan){
-const msg=`Hello GIWM Admin, I want to subscribe to ${plan}. I have paid to Opay 9040315251. Please activate my account. My phone is: ${pPhone.value||'My WhatsApp: +2347059863255'}`;
-window.open(`https://wa.me/2347059863255?text=${encodeURIComponent(msg)}`,'_blank');
-}
-render(); updateFree();
+function deleteAd(i){if(confirm('Delete?')){items.splice(i,1); save(); render();}}
+function adminLogin(){ if(document.getElementById('adminPass').value==='giwm123'){ isAdmin=true; localStorage.setItem('giwm_admin','true'); document.getElementById('adminPanel').style.display='block'; updateStatus(); render(); alert('Owner Mode: Unlimited FREE!'); } else alert('Wrong password'); }
+function adminLogout(){ isAdmin=false; localStorage.removeItem('giwm_admin'); document.getElementById('adminPanel').style.display='none'; updateStatus(); render(); }
+function clearAll(){ if(confirm('Delete ALL ads?')){ items=[]; save(); render(); } }
+function exportData(){ let csv="Title,Price,Location,Category,Phone,Email\n"+items.map(i=>`"${i.title}","${i.price}","${i.loc}","${i.cat}","${i.phone}","${i.email}"`).join("\n"); let blob=new Blob([csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='giwm_customers.csv'; a.click(); }
+function selectPlan(plan){ window.open(`https://wa.me/2347059863255?text=${encodeURIComponent("Hello Admin, I want "+plan+" - Paid to Opay 9040315251")}`,'_blank'); }
+function downloadApp(){ alert('To Download as App:\n1. Chrome > 3 dots top right\n2. Add to Home screen / Install App\n3. GIWM will be on your phone like Jiji!'); }
+if(isAdmin) document.getElementById('adminPanel').style.display='block';
+render(); updateStatus();
 </script>
 </body>
-</html>
+  </html>
