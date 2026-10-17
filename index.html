@@ -1,75 +1,90 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GIWM Marketplace</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>GIWM - Nigeria No.1 Marketplace</title>
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
-*{box-sizing:border-box;font-family:system-ui;margin:0;padding:0}
-body{background:#f5f7f6;padding-bottom:70px}
-.h{background:#0a5c36;color:#fff;padding:14px;display:flex;justify-content:space-between;position:sticky;top:0}
-.btn{background:#0a5c36;color:#fff;border:0;padding:12px;border-radius:8px;width:100%;font-weight:700;margin-top:10px}
-.card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #eee;margin:8px}
-.card img{width:100%;height:160px;object-fit:cover}
-.b{padding:10px}
-.price{color:#0a5c36;font-weight:800}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #ddd}
-.input{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;margin:6px 0}
-.box{background:#fff;padding:14px;margin:10px;border-radius:12px;border:1px solid #ddd}
-.p-price{font-size:20px;font-weight:800;color:#0a5c36}
+*{box-sizing:border-box;font-family:system-ui,sans-serif;margin:0;padding:0}
+body{background:#f4f6f5;padding-bottom:80px}
+.h{background:#0a5c36;color:#fff;padding:14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.btn{background:#0a5c36;color:#fff;border:0;padding:13px;border-radius:10px;width:100%;font-weight:800;font-size:15px}
+.btn2{background:#25D366;color:#fff;border:0;padding:10px;border-radius:8px;width:100%;font-weight:700;margin-top:8px}
+.card{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e8e8e8;margin:10px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card img{width:100%;height:190px;object-fit:cover}
+.b{padding:12px}
+.price{color:#0a5c36;font-weight:900;font-size:18px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px 0;border-top:1px solid #ddd;z-index:20}
+.input{width:100%;padding:13px;border:1.5px solid #ddd;border-radius:10px;margin:7px 0;font-size:14px}
+.box{background:#fff;padding:14px;margin:10px;border-radius:14px;border:1px solid #e5e5e5}
+.badge{background:#e6f4ea;color:#0a5c36;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.del{background:#ff4444;color:#fff;border:0;padding:6px 12px;border-radius:20px;font-size:12px;margin-top:6px}
+.p-price{font-size:24px;font-weight:900;color:#0a5c36}
 </style>
 </head>
 <body>
 
-<div id="login" style="padding:20px">
-<h1 style="color:#0a5c36;text-align:center;margin:20px 0">GIWM MARKETPLACE</h1>
-<input id="name" class="input" placeholder="Your Full Name">
-<input id="phone" class="input" placeholder="Phone Number">
-<button class="btn" onclick="login()">Continue</button>
+<div id="login" style="padding:20px;max-width:400px;margin:auto">
+<h1 style="color:#0a5c36;text-align:center;margin:30px 0 10px">GIWM MARKETPLACE</h1>
+<p style="text-align:center;color:#666;margin-bottom:20px">Nigeria's trusted place to buy & sell</p>
+<input id="name" class="input" placeholder="Full Name (e.g Musa)">
+<input id="phone" class="input" placeholder="WhatsApp Number e.g 09040315251">
+<p style="font-size:12px;color:#666;margin:8px 0">Admin: Use phone 9040315251 to get delete power</p>
+<button class="btn" onclick="login()">Enter Marketplace</button>
 </div>
 
 <div id="home" style="display:none">
-<div class="h"><b>GIWM</b><button onclick="showPost()" style="background:#fff;color:#0a5c36;border:0;padding:6px 12px;border-radius:20px">+ Post</button></div>
-<div class="box"><input id="search" class="input" placeholder="Search..." oninput="show()"><div id="list"></div></div>
-<div class="box" style="background:linear-gradient(135deg,#0a5c36,#0f8a51);color:#fff" onclick="showAds()"><b>📢 Advertise Here</b><br><small>From ₦1,000 - Tap to see price</small></div>
+<div class="h"><b>GIWM.NG</b><div><span id="uname" style="font-size:12px;margin-right:8px"></span><button onclick="showPost()" style="background:#fff;color:#0a5c36;border:0;padding:7px 14px;border-radius:20px;font-weight:800">+ Sell</button></div></div>
+<div class="box"><input id="search" class="input" placeholder="🔍 Search house, phone, car..." oninput="show()"></div>
+<div class="box" style="background:linear-gradient(135deg,#0a5c36,#12a868);color:#fff" onclick="showAds()"><b>📢 BOOST YOUR SALE - From ₦1,000</b><br><small>Tap to see price list + Paystack</small></div>
 <div id="grid"></div>
 </div>
 
-<div id="post" style="display:none;padding:16px">
-<div class="h"><button onclick="showHome()" style="background:none;border:0;color:#fff">← Back</button><b>Post Ad FREE</b><span></span></div>
+<div id="post" style="display:none">
+<div class="h"><button onclick="showHome()" style="background:none;border:0;color:#fff;font-size:16px">← Back</button><b>Post FREE</b><span></span></div>
+<div style="padding:14px;max-width:500px;margin:auto">
 <div class="box">
-<input id="t" class="input" placeholder="Title e.g iPhone 13">
-<input id="pr" type="number" class="input" placeholder="Price">
-<input id="loc" class="input" placeholder="Location e.g Lagos">
-<textarea id="desc" class="input" placeholder="Description"></textarea>
-<button class="btn" onclick="save()">Post Now FREE</button>
+<input id="t" class="input" placeholder="Title e.g 2 Bed Flat in Yaba">
+<input id="pr" type="number" class="input" placeholder="Price e.g 500000">
+<input id="loc" class="input" placeholder="Location e.g Lagos, Yaba">
+<textarea id="desc" class="input" rows="3" placeholder="Describe your item..."></textarea>
+<label style="font-size:13px;font-weight:700">Add Photo (from gallery):</label>
+<input id="imgFile" type="file" accept="image/*" class="input">
+<img id="preview" style="width:100%;height:180px;object-fit:cover;border-radius:10px;display:none;margin-top:8px">
+<button class="btn" onclick="save()">Post Now FREE →</button>
 </div>
 </div>
-
-<div id="ads" style="display:none">
+</div><div id="ads" style="display:none">
 <div class="h"><button onclick="showHome()" style="background:none;border:0;color:#fff">← Back</button><b>Ads Pricing</b><span></span></div>
-<div style="padding:12px">
-<div class="box"><b>7 Days</b><div class="p-price">₦1,000</div><small>Top banner 7 days</small></div>
-<div class="box"><b>1 Month</b><div class="p-price">₦3,500</div></div>
-<div class="box" style="border:2px solid #0a5c36"><b>3 Months - POPULAR</b><div class="p-price">₦8,500</div><small>Save ₦2k</small></div>
-<div class="box"><b>6 Months</b><div class="p-price">₦15,000</div></div>
-<div class="box" style="background:#0a5c36;color:#fff"><b>1 Year</b><div class="p-price" style="color:#ffecb3">₦25,000</div><small>Save ₦17k</small></div>
-<div class="box"><h3>💳 Pay To:</h3><p><b>Bank: OPay</b><br><b style="font-size:22px;color:#0a5c36">9040315251</b><br>After pay send proof to:<br><b>officialgiwm@gmail.com</b></p><button class="btn" style="background:#25D366" onclick="window.open('https://wa.me/2349040315251','_blank')">WhatsApp Proof</button></div>
+<div style="padding:12px;max-width:500px;margin:auto">
+<div class="box"><div style="display:flex;justify-content:space-between"><b>7 Days</b><span class="badge">QUICK</span></div><div class="p-price">₦1,000</div><small>Top banner 7 days</small><button class="btn" onclick="pay(1000,'7 Days')">Pay with Paystack</button></div>
+<div class="box"><b>1 Month</b><div class="p-price">₦3,500</div><button class="btn" onclick="pay(3500,'1 Month')">Pay with Paystack</button></div>
+<div class="box" style="border:2px solid #0a5c36"><div style="display:flex;justify-content:space-between"><b>3 Months</b><span class="badge">POPULAR</span></div><div class="p-price">₦8,500</div><small>Save ₦2,000</small><button class="btn" onclick="pay(8500,'3 Months')">Pay with Paystack</button></div>
+<div class="box"><b>6 Months</b><div class="p-price">₦15,000</div><button class="btn" onclick="pay(15000,'6 Months')">Pay with Paystack</button></div>
+<div class="box" style="background:#0a5c36;color:#fff"><b>1 Year - BEST VALUE</b><div class="p-price" style="color:#ffecb3">₦25,000</div><small>Save ₦17,000</small><button class="btn" style="background:#fff;color:#0a5c36" onclick="pay(25000,'1 Year')">Pay with Paystack</button></div>
+<div class="box"><h3>💳 Or Pay Direct:</h3><p style="margin:10px 0"><b>Bank: OPay</b><br><b style="font-size:26px;color:#0a5c36">9040315251</b><br>Account: GIWM<br>After payment send proof to:</p><p><b>officialgiwm@gmail.com</b><br><b>WhatsApp: 09040315251</b></p><button class="btn2" onclick="window.open('https://wa.me/2349040315251?text=Hello%20I%20paid%20for%20GIWM%20Ads','_blank')">Send Proof on WhatsApp</button></div>
 </div>
 </div>
 
-<div id="nav" class="nav" style="display:none"><div onclick="showHome()">🏠<br>Home</div><div onclick="showPost()">➕<br>Sell</div><div onclick="showAds()">📢<br>Ads</div></div>
+<div id="nav" class="nav" style="display:none"><div onclick="showHome()" style="text-align:center">🏠<br><small>Home</small></div><div onclick="showPost()" style="text-align:center">➕<br><small>Sell</small></div><div onclick="showAds()" style="text-align:center">📢<br><small>Ads</small></div></div>
 
 <script>
-let products=JSON.parse(localStorage.getItem('g')||'[]');
-if(products.length==0){products=[{t:"4 Bedroom Bungalow Ibadan",pr:28500000,loc:"Ibadan",d:"Spacious",img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600"},{t:"iPhone 13 UK Used",pr:420000,loc:"Lagos",d:"Neat",img:"https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600"}];}
-function login(){let n=document.getElementById('name').value;let p=document.getElementById('phone').value;if(!n||!p){alert('Enter name & phone');return}localStorage.setItem('u',JSON.stringify({n,p}));showHome();}
-function showHome(){document.getElementById('login').style.display='none';document.getElementById('post').style.display='none';document.getElementById('ads').style.display='none';document.getElementById('home').style.display='block';document.getElementById('nav').style.display='flex';show();}
+let products=JSON.parse(localStorage.getItem('giwm2')||'[]');
+if(products.length==0){products=[{id:1,t:"4 Bedroom Bungalow Ibadan - C of O",pr:28500000,loc:"Ibadan",d:"Spacious bungalow with C of O",img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600",owner:"Tunde",phone:"08012345678",date:Date.now()},{id:2,t:"iPhone 13 UK Used 128GB",pr:420000,loc:"Lagos Ikeja",d:"Neat UK used",img:"https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600",owner:"Musa",phone:"09040315251",date:Date.now()}];}
+let currentUser=null;let previewData="";
+document.getElementById('imgFile').addEventListener('change',function(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=function(ev){previewData=ev.target.result;let p=document.getElementById('preview');p.src=previewData;p.style.display='block';};r.readAsDataURL(f);});
+function login(){let n=document.getElementById('name').value.trim();let p=document.getElementById('phone').value.trim();if(!n||!p){alert('Enter name & phone');return}currentUser={name:n,phone:p};localStorage.setItem('giwm_user',JSON.stringify(currentUser));showHome();}
+function showHome(){document.getElementById('login').style.display='none';document.getElementById('post').style.display='none';document.getElementById('ads').style.display='none';document.getElementById('home').style.display='block';document.getElementById('nav').style.display='flex';if(currentUser)document.getElementById('uname').innerText='Hi '+currentUser.name.split(' ')[0];show();}
 function showPost(){document.getElementById('home').style.display='none';document.getElementById('post').style.display='block';}
-function showAds(){document.getElementById('home').style.display='none';document.getElementById('post').style.display='none';document.getElementById('ads').style.display='block';}
-function show(){let s=document.getElementById('search').value.toLowerCase();let g=document.getElementById('grid');let f=products.filter(x=>x.t.toLowerCase().includes(s));g.innerHTML=f.map(x=>`<div class="card"><img src="${x.img}"><div class="b"><div class="price">₦${Number(x.pr).toLocaleString()}</div><div>${x.t}</div><small>${x.loc}</small></div></div>`).join('');}
-function save(){let t=document.getElementById('t').value;let pr=document.getElementById('pr').value;let loc=document.getElementById('loc').value;let d=document.getElementById('desc').value;if(!t||!pr){alert('Fill title & price');return}products.unshift({t,pr,loc,d,img:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600"});localStorage.setItem('g',JSON.stringify(products));alert('Posted!');showHome();}
-let u=JSON.parse(localStorage.getItem('u')||'null');if(u){showHome();}
+function showAds(){document.getElementById('home').style.display='none';document.getElementById('post').style.display='none';document.getElementById('ads').style.display='block';document.getElementById('nav').style.display='none';}
+function isAdmin(){if(!currentUser)return false;return currentUser.phone.includes('9040315251')||currentUser.phone.includes('09040315251')||currentUser.name.toLowerCase()=='admin';}
+function show(){let s=document.getElementById('search').value.toLowerCase();let g=document.getElementById('grid');let f=products.filter(x=> (x.t+x.loc+x.d).toLowerCase().includes(s));g.innerHTML=f.map(x=>{let adminBtn=isAdmin()?`<button class="del" onclick="delProd(${x.id})">🗑 Delete (Admin)</button>`:``;let waPhone=x.phone.replace(/[^0-9]/g,'');if(waPhone.startsWith('0'))waPhone='234'+waPhone.slice(1);return `<div class="card"><img src="${x.img}"><div class="b"><div style="display:flex;justify-content:space-between"><span class="badge">${x.loc}</span><small>${new Date(x.date).toLocaleDateString()}</small></div><div class="price">₦${Number(x.pr).toLocaleString()}</div><div style="font-weight:700;margin:4px 0">${x.t}</div><small style="color:#666">${x.d||''}</small><br><small>By ${x.owner}</small><button class="btn2" onclick="window.open('https://wa.me/${waPhone}?text=Hi%20I%20saw%20your%20${encodeURIComponent(x.t)}%20on%20GIWM','_blank')">💬 WhatsApp Seller: ${x.phone}</button>${adminBtn}</div></div>`}).join('');if(f.length==0)g.innerHTML='<div class="box" style="text-align:center;color:#666">No item found</div>';}
+function save(){let t=document.getElementById('t').value.trim();let pr=document.getElementById('pr').value.trim();let loc=document.getElementById('loc').value.trim();let d=document.getElementById('desc').value.trim();if(!t||!pr){alert('Fill title & price');return}let img=previewData||"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600";let newProd={id:Date.now(),t,pr:Number(pr),loc:loc||'Nigeria',d,img,owner:currentUser?currentUser.name:'User',phone:currentUser?currentUser.phone:'09040315251',date:Date.now()};products.unshift(newProd);localStorage.setItem('giwm2',JSON.stringify(products));document.getElementById('t').value='';document.getElementById('pr').value='';document.getElementById('loc').value='';document.getElementById('desc').value='';previewData='';document.getElementById('preview').style.display='none';alert('✅ Posted! Buyers can WhatsApp you now!');showHome();}
+function delProd(id){if(!isAdmin()){alert('Only admin can delete');return}if(!confirm('Delete this product?'))return;products=products.filter(x=>x.id!=id);localStorage.setItem('giwm2',JSON.stringify(products));show();}
+function pay(amount,plan){if(!currentUser){alert('Login first');return}let email=currentUser.phone+'@giwm.ng';let handler=PaystackPop.setup({key:'pk_test_xxxxxxxxxxxxxxxx',email:email,amount:amount*100,currency:'NGN',ref:''+Math.floor((Math.random()*1000000000)+1),metadata:{custom_fields:[{display_name:"Plan",variable_name:"plan",value:plan},{display_name:"Phone",variable_name:"phone",value:currentUser.phone}]},callback:function(r){alert('✅ Payment Successful for '+plan+'! Ref: '+r.reference+'\nSend screenshot to 09040315251 to activate');},onClose:function(){alert('Payment cancelled');}});handler.openIframe();}
+let saved=JSON.parse(localStorage.getItem('giwm_user')||'null');if(saved){currentUser=saved;showHome();}
 </script>
 </body>
 </html>
