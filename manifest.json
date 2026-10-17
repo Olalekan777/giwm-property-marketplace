@@ -1,14 +1,19 @@
 {
-  "name": "GIWM MARKET PLACE",
+  "name": "GIWM Property Marketplace",
   "short_name": "GIWM",
-  "description": "Abuja's Trusted Property Marketplace",
-  "start_url": "/giwm-property-marketplace/",
+  "description": "Verified Property Marketplace - Lekki, Ibadan, Lagos",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1d4ed8",
+  "theme_color": "#0a7a3c",
   "icons": [
     {
-      "src": "logo.png",
+      "src": "https://cdn-icons-png.flaticon.com/512/69/69881.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/69/69881.png",
       "sizes": "512x512",
       "type": "image/png"
     }
