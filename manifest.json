@@ -1,0 +1,16 @@
+{
+  "name": "GIWM MARKET PLACE",
+  "short_name": "GIWM",
+  "description": "Abuja's Trusted Property Marketplace",
+  "start_url": "/giwm-property-marketplace/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d4ed8",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
