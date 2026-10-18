@@ -55,7 +55,7 @@ let props=JSON.parse(localStorage.getItem("giwm_props")||"null")||defaultProps;
 function render(filter=""){
   let html="";
   props.filter(p=>p.title.toLowerCase().includes(filter.toLowerCase())||p.loc.toLowerCase().includes(filter.toLowerCase())).forEach(p=>{
-    html+=`<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x300?text=GIWM'"><div class="card-body"><div class="price">₦${Number(p.price).toLocaleString()}</div><h4>${p.title}</h4><p>📍 ${p.loc}</p><p style="color:#666;font-size:13px;margin-top:5px">${p.desc}</p><button style="margin-top:10px;width:100%;padding:10px;background:#0a7e07;color:white;border:none;border-radius:8px" onclick="window.open('https://wa.me/2340000000000?text=Hi, I'm interested in ${p.title} at ${p.loc}')"><b>Chat on WhatsApp</b></button></div></div>`;
+    html+=`<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x300?text=GIWM'"><div class="card-body"><div class="price">₦${Number(p.price).toLocaleString()}</div><h4>${p.title}</h4><p>📍 ${p.loc}</p><p style="color:#666;font-size:13px;margin-top:5px">${p.desc}</p><button style="margin-top:10px;width:100%;padding:10px;background:#0a7e07;color:white;border:none;border-radius:8px" onclick="window.open('https://wa.me/2347059863255?text=Hi, I'm interested in ${p.title} at ${p.loc}')"><b>Chat on WhatsApp</b></button></div></div>`;
   });
   document.getElementById("list").innerHTML=html;
 }
