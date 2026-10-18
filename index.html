@@ -1,195 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GIWM MARKETPLACE</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#f5f5f5}
-.header{background:#0a5c36;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-.header h1{font-size:18px}
-.btn{background:#0a5c36;color:white;border:none;padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer}
-.btn-white{background:white;color:#0a5c36;border-radius:20px}
-.search-box{padding:12px;background:white}
-.search-box input{width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;outline:none}
-.card{background:white;margin:10px;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
-.card img{width:100%;height:220px;object-fit:cover}
-.card-info{padding:12px}
-.price{color:#0a5c36;font-weight:800;font-size:18px}
-.actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.action-btn{flex:1;padding:10px;border-radius:8px;border:none;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;font-size:14px}
-.wa{background:#25D366;color:white}
-.call{background:#0a5c36;color:white}
-.del{background:#ff4444;color:white}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
-.modal.active{display:flex}
-.modal-box{background:white;width:100%;max-width:400px;border-radius:12px;padding:20px;max-height:90vh;overflow:auto}
-.modal-box h2{margin-bottom:15px;color:#0a5c36}
-.modal-box input,.modal-box select,.modal-box textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
-.close{float:right;font-size:22px;cursor:pointer}
-.badge{display:inline-block;background:#e6f4ea;color:#0a5c36;padding:4px 8px;border-radius:4px;font-size:12px;margin-top:4px}
-.login-info{background:#fff3cd;padding:10px;border-radius:8px;margin:10px;font-size:13px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f5f5f5;padding-bottom:80px}
+header{background:#0a7e07;color:white;padding:15px;text-align:center;position:sticky;top:0;z-index:10}
+header h1{font-size:22px}
+.search{margin:10px;background:white;padding:10px;border-radius:10px;display:flex;gap:10px}
+.search input{flex:1;border:none;outline:none;font-size:16px}
+.properties{padding:10px;display:grid;gap:15px}
+.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.card img{width:100%;height:200px;object-fit:cover}
+.card-body{padding:12px}
+.price{color:#0a7e07;font-weight:bold;font-size:18px}
+.post-btn{position:fixed;bottom:20px;right:20px;background:#0a7e07;color:white;border:none;padding:15px 25px;border-radius:50px;font-size:16px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:100;padding:20px;overflow-y:auto}
+.modal-box{background:white;border-radius:15px;padding:20px;max-width:400px;margin:20px auto}
+.modal-box input, .modal-box textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}
+.modal-box button{width:100%;padding:13px;background:#0a7e07;color:white;border:none;border-radius:8px;font-weight:bold;margin-top:10px;font-size:16px}
+.close{float:right;font-size:24px;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="header">
-<h1>GIWM MARKETPLACE</h1>
-<button class="btn btn-white" onclick="openPostModal()">+ Post</button>
-</div>
-<div class="search-box">
-<input id="search" placeholder="Search Lekki, Ibadan, Lagos..." oninput="filterPosts()">
-</div>
-<div id="loginStatus" class="login-info" style="display:none"></div>
-<div id="list"></div>
+<header><h1>GIWM MARKETPLACE</h1><small>Buy & Sell Properties in Nigeria</small></header>
 
-<div id="postModal" class="modal">
-<div class="modal-box">
-<span class="close" onclick="closeModal('postModal')">&times;</span>
-<h2>Post New Item</h2>
-<input id="pTitle" placeholder="Title e.g. 3 Bedroom Duplex - Lekki">
-<input id="pPrice" type="number" placeholder="Price e.g. 45000000">
-<input id="pLocation" placeholder="Location e.g. Lekki Phase 1">
-<select id="pType">
-<option>House</option><option>Land</option><option>Car</option><option>Phone</option><option>Other</option>
-</select>
+<div class="search"><span>🔍</span><input id="search" placeholder="Search Lekki, Ibadan, Lagos..." oninput="filterProp()"></div>
+
+<div class="properties" id="list"></div>
+
+<button class="post-btn" onclick="openModal()">+ Post</button>
+
+<div id="modal"><div class="modal-box">
+<span class="close" onclick="closeModal()">&times;</span>
+<h3>Post Your Property</h3>
+<input id="pTitle" placeholder="Title e.g. 4 Bedroom Duplex - Lekki">
+<input id="pPrice" placeholder="Price e.g. 45000000">
+<input id="pLoc" placeholder="Location e.g. Lekki, Lagos">
+<input id="pImg" placeholder="Image Link (paste Facebook/WhatsApp image link)">
 <textarea id="pDesc" placeholder="Description"></textarea>
-<input id="pPhone" placeholder="Your WhatsApp number e.g. 09040315251">
-<label style="font-size:13px;margin-top:8px;display:block">Upload Photo:</label>
-<input id="pImageFile" type="file" accept="image/*">
-<input id="pImageUrl" placeholder="Or paste image URL (optional)">
-<div style="margin-top:12px">
-<label style="font-size:13px">Promote? (Pay to be on top)</label>
-<select id="pPromo" onchange="togglePay()">
-<option value="free">Free - Normal listing</option>
-<option value="1000">₦1,000 - 3 Days Top</option>
-<option value="3000">₦3,000 - 7 Days Top</option>
-<option value="5000">₦5,000 - 30 Days Top</option>
-</select>
-</div>
-<div id="paySection" style="display:none;margin-top:10px;padding:10px;background:#f9f9f9;border-radius:8px">
-<p style="font-size:13px;font-weight:600">Pay to Promote:</p>
-<button class="btn" style="width:100%;margin:6px 0;background:#0a5c36" onclick="payWithPaystack()">Pay with Paystack (Card/Bank)</button>
-<p style="text-align:center;font-size:12px;margin:4px 0">OR</p>
-<p style="font-size:13px">Transfer to OPay: <b>9040315251</b> then WhatsApp proof</p>
-<button class="btn" style="width:100%;margin-top:6px;background:#25D366" onclick="alert('After transfer, WhatsApp proof to 09040315251')">I Have Transferred</button>
-</div>
-<button class="btn" style="width:100%;margin-top:15px;padding:14px" onclick="createPost()">Post Now</button>
-</div>
-</div>
-
-<div id="loginModal" class="modal">
-<div class="modal-box">
-<span class="close" onclick="closeModal('loginModal')">&times;</span>
-<h2>Login to Post</h2>
-<input id="lName" placeholder="Your Name">
-<input id="lPhone" placeholder="Phone e.g. 09040315251">
-<p style="font-size:12px;color:#666">Admin? Use 09040315251 to delete posts</p>
-<button class="btn" style="width:100%;margin-top:10px" onclick="doLogin()">Login</button>
-</div>
-</div>
+<button onclick="saveProp()">Post Property Now</button>
+<button onclick="closeModal()" style="background:#ccc;color:#333">Cancel</button>
+</div></div>
 
 <script>
-let currentUser = JSON.parse(localStorage.getItem('giwm_user')||'null');
-let posts = JSON.parse(localStorage.getItem('giwm_posts')||'null');
-if(!posts){
-posts=[
-{title:'3 Bedroom Duplex - Lekki Phase 1',price:45000000,location:'Lekki',type:'House',desc:'Verified',phone:'09040315251',img:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600',promoted:true,date:Date.now()},
-{title:'4 Bedroom Bungalow - Ibadan',price:28500000,location:'Ibadan',type:'House',desc:'New • 30 days ago',phone:'09040315251',img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600',promoted:false,date:Date.now()-100000}
+let defaultProps=[
+{title:"4 Bedroom Duplex - Lekki",price:"45000000",loc:"Lekki, Lagos",img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500",desc:"Luxury 4 bedroom duplex with BQ"},
+{title:"4 Bedroom Bungalow - Ibadan",price:"28500000",loc:"Ibadan, Oyo",img:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500",desc:"Spacious bungalow in serene estate"}
 ];
+let props=JSON.parse(localStorage.getItem("giwm_props")||"null")||defaultProps;
+
+function render(filter=""){
+  let html="";
+  props.filter(p=>p.title.toLowerCase().includes(filter.toLowerCase())||p.loc.toLowerCase().includes(filter.toLowerCase())).forEach(p=>{
+    html+=`<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x300?text=GIWM'"><div class="card-body"><div class="price">₦${Number(p.price).toLocaleString()}</div><h4>${p.title}</h4><p>📍 ${p.loc}</p><p style="color:#666;font-size:13px;margin-top:5px">${p.desc}</p><button style="margin-top:10px;width:100%;padding:10px;background:#0a7e07;color:white;border:none;border-radius:8px" onclick="window.open('https://wa.me/2340000000000?text=Hi, I'm interested in ${p.title} at ${p.loc}')"><b>Chat on WhatsApp</b></button></div></div>`;
+  });
+  document.getElementById("list").innerHTML=html;
 }
-function savePosts(){localStorage.setItem('giwm_posts',JSON.stringify(posts));}
-function updateLoginStatus(){
-const el=document.getElementById('loginStatus');
-if(currentUser){el.style.display='block';el.innerHTML=`Logged as <b>${currentUser.name}</b> (${currentUser.phone}) ${currentUser.phone==='09040315251'?'• ADMIN':''} <a href="#" onclick="logout()" style="float:right">Logout</a>`;}
-else el.style.display='none';
+function filterProp(){render(document.getElementById("search").value)}
+function openModal(){document.getElementById("modal").style.display="block"}
+function closeModal(){document.getElementById("modal").style.display="none"}
+function saveProp(){
+ let t=document.getElementById("pTitle").value;
+ let pr=document.getElementById("pPrice").value;
+ let l=document.getElementById("pLoc").value;
+ let im=document.getElementById("pImg").value;
+ let d=document.getElementById("pDesc").value;
+ if(!t||!pr||!l){alert("Fill Title, Price, Location");return}
+ if(!im) im="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500";
+ props.unshift({title:t,price:pr,loc:l,img:im,desc:d});
+ localStorage.setItem("giwm_props",JSON.stringify(props));
+ closeModal();render();
+ alert("Property Posted Successfully!");
 }
-function openPostModal(){
-if(!currentUser){document.getElementById('loginModal').classList.add('active');return;}
-document.getElementById('postModal').classList.add('active');
-}
-function closeModal(id){document.getElementById(id).classList.remove('active');}
-function doLogin(){
-const name=document.getElementById('lName').value.trim();
-const phone=document.getElementById('lPhone').value.trim();
-if(!name||!phone){alert('Enter name and phone');return;}
-currentUser={name,phone};localStorage.setItem('giwm_user',JSON.stringify(currentUser));
-closeModal('loginModal');updateLoginStatus();
-document.getElementById('postModal').classList.add('active');
-}
-function logout(){localStorage.removeItem('giwm_user');currentUser=null;updateLoginStatus();}
-function togglePay(){
-const v=document.getElementById('pPromo').value;
-document.getElementById('paySection').style.display=v==='free'?'none':'block';
-}
-function payWithPaystack(){
-const promo=document.getElementById('pPromo').value;
-if(promo==='free'){alert('Select a paid plan');return;}
-let handler = PaystackPop.setup({
-key: 'pk_test_xxxxxxxx', 
-email: 'customer@giwm.com',
-amount: parseInt(promo)*100,
-currency: 'NGN',
-callback: function(response){alert('Payment success! Ref: '+response.reference);},
-onClose: function(){alert('Payment closed');}
-});
-handler.openIframe();
-}
-function createPost(){
-const title=document.getElementById('pTitle').value.trim();
-const price=parseInt(document.getElementById('pPrice').value);
-const location=document.getElementById('pLocation').value.trim();
-const type=document.getElementById('pType').value;
-const desc=document.getElementById('pDesc').value.trim();
-const phone=document.getElementById('pPhone').value.trim()||currentUser.phone;
-let img=document.getElementById('pImageUrl').value.trim();
-const fileInput=document.getElementById('pImageFile');
-if(!title||!price){alert('Enter title and price');return;}
-if(fileInput.files && fileInput.files[0]){
-const reader=new FileReader();
-reader.onload=function(e){finishPost(title,price,location,type,desc,phone,e.target.result);};
-reader.readAsDataURL(fileInput.files[0]);return;
-}
-if(!img) img='https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600';
-finishPost(title,price,location,type,desc,phone,img);
-}
-function finishPost(title,price,location,type,desc,phone,img){
-const promo=document.getElementById('pPromo').value;
-posts.unshift({title,price,location,type,desc,phone,img,promoted:promo!=='free',date:Date.now()});
-savePosts();closeModal('postModal');render();
-alert(promo!=='free'?'Posted! Pay to OPay 9040315251 to promote!':'Posted!');
-document.getElementById('pTitle').value='';document.getElementById('pPrice').value='';document.getElementById('pLocation').value='';document.getElementById('pDesc').value='';document.getElementById('pImageUrl').value='';document.getElementById('pImageFile').value='';
-}
-function deletePost(i){
-if(currentUser && currentUser.phone==='09040315251'){
-if(confirm('Admin: Delete this post?')){posts.splice(i,1);savePosts();render();}
-}else alert('Only admin can delete');
-}
-function render(){
-const q=document.getElementById('search').value.toLowerCase();
-let filtered=posts.filter(p=>(p.title+p.location+p.type).toLowerCase().includes(q));
-filtered.sort((a,b)=>{if(a.promoted&&!b.promoted)return -1;if(!a.promoted&&b.promoted)return 1;return b.date-a.date;});
-const list=document.getElementById('list');
-list.innerHTML=filtered.map((p)=>{
-const realIdx=posts.indexOf(p);
-return `<div class="card">
-<img src="${p.img}" onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600'">
-<div class="card-info">
-<div class="price">₦${p.price.toLocaleString()}</div>
-<div style="font-weight:600;margin:4px 0">${p.title}</div>
-<div style="font-size:13px;color:#666">${p.desc} • ${p.location} ${p.promoted?'<span class="badge">🔥 Promoted</span>':''}</div>
-<div class="actions">
-<a class="action-btn wa" href="https://wa.me/234${p.phone.replace(/^0/,'')}?text=Hi, I'm interested in ${encodeURIComponent(p.title)} on GIWM" target="_blank">WhatsApp</a>
-<a class="action-btn call" href="tel:${p.phone}">Call</a>
-${currentUser && currentUser.phone==='09040315251'?`<button class="action-btn del" onclick="deletePost(${realIdx})">🗑 Delete</button>`:''}
-</div>
-</div>
-</div>`;
-}).join('');
-}
-function filterPosts(){render();}
-updateLoginStatus();render();
+render();
 </script>
-<script src="https://js.paystack.co/v1/inline.js"></script>
 </body>
 </html>
